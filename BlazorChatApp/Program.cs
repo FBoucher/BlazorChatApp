@@ -11,11 +11,19 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddKernel();
 
-var aiConfig = builder.Configuration.GetSection("SmartComponents");
-builder.Services.AddAzureOpenAIChatCompletion(
-    deploymentName: aiConfig["DeploymentName"]!,
-    endpoint: aiConfig["Endpoint"]!,
-    new DefaultAzureCredential());
+// var aiConfig = builder.Configuration.GetSection("SmartComponents");
+// builder.Services.AddAzureOpenAIChatCompletion(
+//     deploymentName: aiConfig["DeploymentName"]!,
+//     endpoint: aiConfig["Endpoint"]!,
+//     new DefaultAzureCredential());
+
+#pragma warning disable SKEXP0003, SKEXP0010, SKEXP0011, SKEXP0052
+
+var aiConfig = builder.Configuration.GetSection("LocalSmart");
+builder.Services.AddOpenAIChatCompletion(
+    modelId: "llama3.1",
+    endpoint: new Uri("http://localhost:11434/"),
+    apiKey: "apikey");
 
 builder.Services.AddScoped(sp => KernelPluginFactory.CreateFromType<ThemePlugin>(serviceProvider: sp));
 
