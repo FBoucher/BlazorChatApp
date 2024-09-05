@@ -1,4 +1,5 @@
 ﻿@page "/counter"
+@using System.Diagnostics
 @rendermode InteractiveServer
 
 <PageTitle>Counter</PageTitle>
@@ -14,6 +15,7 @@
 
     private void IncrementCount()
     {
+        using var activity = Activity.Current.Source.StartActivity("incrementing-counter");
         currentCount++;
     }
 }

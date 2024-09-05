@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection;
@@ -5,6 +6,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
 namespace Microsoft.Extensions.Hosting;
@@ -14,6 +16,8 @@ namespace Microsoft.Extensions.Hosting;
 // To learn more about using this project, see https://aka.ms/dotnet/aspire/service-defaults
 public static class Extensions
 {
+    private const string OTEL_DEFAULT_GRPC_ENDPOINT = "http://localhost:4317";
+    
     public static IHostApplicationBuilder AddServiceDefaults(this IHostApplicationBuilder builder)
     {
         builder.ConfigureOpenTelemetry();
@@ -43,21 +47,22 @@ public static class Extensions
         });
 
         builder.Services.AddOpenTelemetry()
-            .WithMetrics(metrics =>
-            {
-                metrics.AddAspNetCoreInstrumentation()
+            .WithTracing(tracerProviderBuilder =>
+                tracerProviderBuilder
+                    .AddSource(DiagnosticsConfig.ActivitySource.Name)
+                    .ConfigureResource(resource => resource
+                        .AddService(DiagnosticsConfig.ServiceName))
+                    .AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
-                    .AddRuntimeInstrumentation();
-            })
-            .WithTracing(tracing =>
-            {
-                tracing.AddAspNetCoreInstrumentation()
-                    // Uncomment the following line to enable gRPC instrumentation (requires the OpenTelemetry.Instrumentation.GrpcNetClient package)
-                    //.AddGrpcClientInstrumentation()
-                    .AddHttpClientInstrumentation();
-            });
-
-        builder.AddOpenTelemetryExporters();
+                    .AddOtlpExporter(exportBuilder => exportBuilder.Endpoint = new Uri(builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"] ?? OTEL_DEFAULT_GRPC_ENDPOINT)))
+            .WithMetrics(metricsProviderBuilder =>
+                metricsProviderBuilder
+                    .ConfigureResource(resource => resource
+                        .AddService(DiagnosticsConfig.ServiceName))
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddRuntimeInstrumentation()
+                    .AddOtlpExporter());
 
         return builder;
     }
@@ -68,7 +73,9 @@ public static class Extensions
 
         if (useOtlpExporter)
         {
-            builder.Services.AddOpenTelemetry().UseOtlpExporter();
+            builder.Services
+                .AddOpenTelemetry()
+                .UseOtlpExporter(OpenTelemetry.Exporter.OtlpExportProtocol.Grpc, new Uri(builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]));
         }
 
         // Uncomment the following lines to enable the Azure Monitor exporter (requires the Azure.Monitor.OpenTelemetry.AspNetCore package)
@@ -108,4 +115,10 @@ public static class Extensions
 
         return app;
     }
+}
+
+public static class DiagnosticsConfig
+{
+    public const string ServiceName = "blazorchatapp";
+    public static ActivitySource ActivitySource = new ActivitySource(ServiceName);
 }
