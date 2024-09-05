@@ -1,0 +1,49 @@
+version: "3.7"
+services:
+  datadog:
+    image: gcr.io/datadoghq/agent:latest
+    pid: host
+    ports:
+      - 8125:8125
+      - 8126:8126
+      - 4317:4317
+      - 4318:4318
+    environment:
+     - DD_API_KEY=
+     - DD_SITE=datadoghq.com
+     - DD_APM_NON_LOCAL_TRAFFIC=true
+     - DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true
+     - DD_OTLP_CONFIG_RECEIVER_PROTOCOLS_GRPC_ENDPOINT=0.0.0.0:4317
+     - DD_OTLP_CONFIG_RECEIVER_PROTOCOLS_HTTP_ENDPOINT=0.0.0.0:4318
+     - DD_TRACE_OTEL_ENABLED=true
+     - DD_LOGS_ENABLED=true
+     - DD_OTLP_CONFIG_LOGS_ENABLED=true
+     - DD_API_ENABLED=true
+    volumes:
+     - /var/run/docker.sock:/var/run/docker.sock
+     - /proc/:/host/proc/:ro
+     - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - 11434:11434
+    volumes:
+      - .:/code
+      - ./ollama/ollama:/root/.ollama
+    container_name: ollama
+    pull_policy: always
+    tty: true
+    restart: always
+
+  chatapp:
+    build: ./
+    ports:
+      - 8080:8080
+    container_name: chatapp
+    environment:
+      - OTEL_SERVICE_NAME=blazorchatapp
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://datadog:4317
+      - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
+      - OTEL_RESOURCE_ATTRIBUTES=deployment.environment=docker,host.name=otelcol-docker
+      - DD_AGENT_HOST=datadog
