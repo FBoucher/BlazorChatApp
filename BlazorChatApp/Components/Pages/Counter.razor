@@ -1,4 +1,7 @@
 ﻿@page "/counter"
+
+@using System.Diagnostics
+
 @rendermode InteractiveServer
 
 <PageTitle>Counter</PageTitle>
@@ -9,11 +12,31 @@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
+@if (isError)
+{
+    <div class="alert-danger border border-1 border-danger p-3" style="width: 30em">Oops!<br />Something went wrong, try again.</div>
+}
+
+
 @code {
     private int currentCount = 0;
+    bool isError = false;
 
     private void IncrementCount()
     {
+        isError = false;
+        using var activity = Activity.Current.Source.StartActivity("incrementing-counter");
         currentCount++;
+        try
+        {
+            if (currentCount % 5 == 0)
+            {
+                throw new Exception("Fake Exception");
+            }
+        }
+        catch (Exception ex)
+        {
+            isError = true;
+        }
     }
 }

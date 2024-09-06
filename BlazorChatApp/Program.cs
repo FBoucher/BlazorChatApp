@@ -1,25 +1,44 @@
-using Azure.Identity;
 using BlazorChatApp;
 using BlazorChatApp.Components;
 using Microsoft.SemanticKernel;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Aspire update
+builder.AddServiceDefaults();
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+// Add Semantic Kernel
 builder.Services.AddKernel();
 
-var aiConfig = builder.Configuration.GetSection("SmartComponents");
-builder.Services.AddAzureOpenAIChatCompletion(
-    deploymentName: aiConfig["DeploymentName"]!,
-    endpoint: aiConfig["Endpoint"]!,
-    new DefaultAzureCredential());
+// Add DetailedErrors
+builder.Services.AddServerSideBlazor().AddCircuitOptions(option => { option.DetailedErrors = true; });
 
-builder.Services.AddScoped(sp => KernelPluginFactory.CreateFromType<ThemePlugin>(serviceProvider: sp));
+// Use this when Azure OpenAI
+// var aiConfig = builder.Configuration.GetSection("SmartComponents");
+// builder.Services.AddAzureOpenAIChatCompletion(
+//     deploymentName: aiConfig["DeploymentName"]!,
+//     endpoint: aiConfig["Endpoint"]!,
+//     new DefaultAzureCredential());
+
+// Use this when LLM is local
+#pragma warning disable SKEXP0003, SKEXP0010, SKEXP0011, SKEXP0052
+
+builder.Services.AddOpenAIChatCompletion(
+    modelId: "llama3.1",
+    endpoint: new Uri(builder.Configuration["LOCAL_LLM"] ?? "http://localhost:11434/"),
+    apiKey: "apikey");
+
+//builder.Services.AddScoped(sp => KernelPluginFactory.CreateFromType<ThemePlugin>(serviceProvider: sp));
+
 
 var app = builder.Build();
+
+// Aspire update
+app.MapDefaultEndpoints();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

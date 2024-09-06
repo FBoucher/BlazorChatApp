@@ -1,16 +1,21 @@
 ﻿@page "/"
+
+@rendermode InteractiveServer
+
+@using System.Diagnostics
 @using Microsoft.SemanticKernel
 @using Microsoft.SemanticKernel.ChatCompletion
 @using Microsoft.SemanticKernel.Connectors.OpenAI
-@rendermode InteractiveServer
 @inject Kernel Kernel
 @inject IChatCompletionService ChatService
+@inject IConfiguration Configuration
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Bonjour, Hi!</h1>
 
-Welcome to your new app.
+<p> LOCAL_LLM: @Configuration["LOCAL_LLM"]</p>
+<p> OTEL_EXPORTER_OTLP_ENDPOINT: @Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]</p>
 
 <div class="card">
     <div class="card-body">
@@ -19,7 +24,7 @@ Welcome to your new app.
             <label for="message">Message:</label>
             <textarea class="form-control" id="message" @bind="@message"></textarea>
         </div>
-        <button class="btn btn-primary mt-2" @onclick="Send">Send</button>
+        <button id="btnSend" class="btn btn-primary mt-2" @onclick="Send">Send</button>
     </div>
 </div>
 
@@ -30,15 +35,21 @@ Welcome to your new app.
     </div>
 </div>
 
+
 @code {
     private string message;
     private string response;
-    ChatHistory chat = new(@"You're a helpful chat assistant demonstrating the capabilities of Azure OpenAI in a Blazor app.
-If asked to do something dangerous or hostile, you should suggest playing a nice game of chess instead.
-When requested, you can change the theme colors of the app using CSS colors.");
+    ChatHistory chat = new(@"You're a friendly and helpful chat assistant demonstrating the capabilities of Azure OpenAI in a Blazor app.");
+
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
 
     private async Task Send()
     {
+        using var activity = Activity.Current.Source.StartActivity("sending-chat-message");
+        
         chat.AddUserMessage(message);
         response = "";
         OpenAIPromptExecutionSettings settings = new() { ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions };

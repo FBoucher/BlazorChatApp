@@ -1,5 +1,6 @@
 ﻿@page "/weather"
 @attribute [StreamRendering]
+@using System.Diagnostics
 
 <PageTitle>Weather</PageTitle>
 
@@ -41,8 +42,11 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        using var activity = Activity.Current.Source.StartActivity("fetch-weather-forecast");
         // Simulate asynchronous loading to demonstrate streaming rendering
-        await Task.Delay(500);
+        Random rand = new Random();
+        int fakeWait = rand.Next(200, 700);
+        await Task.Delay(fakeWait);
 
         var startDate = DateOnly.FromDateTime(DateTime.Now);
         var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
