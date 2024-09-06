@@ -8,10 +8,14 @@
 @using Microsoft.SemanticKernel.Connectors.OpenAI
 @inject Kernel Kernel
 @inject IChatCompletionService ChatService
+@inject IConfiguration Configuration
 
 <PageTitle>Home</PageTitle>
 
 <h1>Bonjour, Hi!</h1>
+
+<p> LOCAL_LLM: @Configuration["LOCAL_LLM"]</p>
+<p> OTEL_EXPORTER_OTLP_ENDPOINT: @Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]</p>
 
 <div class="card">
     <div class="card-body">
@@ -36,6 +40,11 @@
     private string message;
     private string response;
     ChatHistory chat = new(@"You're a friendly and helpful chat assistant demonstrating the capabilities of Azure OpenAI in a Blazor app.");
+
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
 
     private async Task Send()
     {
