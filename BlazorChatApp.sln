@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.10.35122.118
+VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorChatApp", "BlazorChatApp\BlazorChatApp.csproj", "{FE1AED58-7377-4B59-9623-2754C714F616}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorChatApp", "BlazorChatApp\BlazorChatApp.csproj", "{4CED4EC1-92D0-4DA1-BB95-380E7B24738B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorChatApp.AppHost", "BlazorChatApp.AppHost\BlazorChatApp.AppHost.csproj", "{74F0E272-955C-4473-9BE3-4A6C9C01C6D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppHost", "AppHost\AppHost.csproj", "{7BB4B00F-D284-4C97-B7B5-1EA42B978DEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorChatApp.ServiceDefaults", "BlazorChatApp.ServiceDefaults\BlazorChatApp.ServiceDefaults.csproj", "{2D999D18-BC62-49AF-9690-64D7BC903B08}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceDefaults", "ServiceDefaults\ServiceDefaults.csproj", "{FFF0E417-B43D-41B1-B843-9B2BFF14D4DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,23 +15,23 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FE1AED58-7377-4B59-9623-2754C714F616}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FE1AED58-7377-4B59-9623-2754C714F616}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FE1AED58-7377-4B59-9623-2754C714F616}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FE1AED58-7377-4B59-9623-2754C714F616}.Release|Any CPU.Build.0 = Release|Any CPU
-		{74F0E272-955C-4473-9BE3-4A6C9C01C6D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74F0E272-955C-4473-9BE3-4A6C9C01C6D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{74F0E272-955C-4473-9BE3-4A6C9C01C6D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{74F0E272-955C-4473-9BE3-4A6C9C01C6D8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2D999D18-BC62-49AF-9690-64D7BC903B08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2D999D18-BC62-49AF-9690-64D7BC903B08}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2D999D18-BC62-49AF-9690-64D7BC903B08}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2D999D18-BC62-49AF-9690-64D7BC903B08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CED4EC1-92D0-4DA1-BB95-380E7B24738B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CED4EC1-92D0-4DA1-BB95-380E7B24738B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CED4EC1-92D0-4DA1-BB95-380E7B24738B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CED4EC1-92D0-4DA1-BB95-380E7B24738B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BB4B00F-D284-4C97-B7B5-1EA42B978DEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BB4B00F-D284-4C97-B7B5-1EA42B978DEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BB4B00F-D284-4C97-B7B5-1EA42B978DEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BB4B00F-D284-4C97-B7B5-1EA42B978DEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFF0E417-B43D-41B1-B843-9B2BFF14D4DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFF0E417-B43D-41B1-B843-9B2BFF14D4DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFF0E417-B43D-41B1-B843-9B2BFF14D4DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFF0E417-B43D-41B1-B843-9B2BFF14D4DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {49509DCB-E4AE-4A8A-9547-A4458A9F3368}
+		SolutionGuid = {FE00C82D-CAD4-4DCD-AA31-CB4FDBDAD99C}
 	EndGlobalSection
 EndGlobal

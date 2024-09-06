@@ -1,16 +1,17 @@
 ﻿@page "/"
+
+@rendermode InteractiveServer
+
+@using System.Diagnostics
 @using Microsoft.SemanticKernel
 @using Microsoft.SemanticKernel.ChatCompletion
 @using Microsoft.SemanticKernel.Connectors.OpenAI
-@rendermode InteractiveServer
 @inject Kernel Kernel
 @inject IChatCompletionService ChatService
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
+<h1>Bonjour, Hi!</h1>
 
 <div class="card">
     <div class="card-body">
@@ -19,7 +20,7 @@ Welcome to your new app.
             <label for="message">Message:</label>
             <textarea class="form-control" id="message" @bind="@message"></textarea>
         </div>
-        <button class="btn btn-primary mt-2" @onclick="Send">Send</button>
+        <button id="btnSend" class="btn btn-primary mt-2" @onclick="Send">Send</button>
     </div>
 </div>
 
@@ -30,6 +31,7 @@ Welcome to your new app.
     </div>
 </div>
 
+
 @code {
     private string message;
     private string response;
@@ -37,6 +39,8 @@ Welcome to your new app.
 
     private async Task Send()
     {
+        using var activity = Activity.Current.Source.StartActivity("sending-chat-message");
+        
         chat.AddUserMessage(message);
         response = "";
         OpenAIPromptExecutionSettings settings = new() { ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions };
