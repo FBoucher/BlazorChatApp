@@ -16,13 +16,14 @@
 
 <p> LOCAL_LLM: @Configuration["LOCAL_LLM"]</p>
 <p> OTEL_EXPORTER_OTLP_ENDPOINT: @Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]</p>
+<p> Endpoint: @Configuration["SmartComponents:Endpoint"]</p>
 
 <div class="card">
     <div class="card-body">
         <h5 class="card-title">Send Message</h5>
         <div class="form-group">
             <label for="message">Message:</label>
-            <textarea class="form-control" id="message" @bind="@message"></textarea>
+            <textarea class="form-control" id="message" @bind="@message" @onkeydown="@Enter"></textarea>
         </div>
         <button id="btnSend" class="btn btn-primary mt-2" @onclick="Send">Send</button>
     </div>
@@ -44,6 +45,14 @@
     protected override async Task OnInitializedAsync()
     {
 
+    }
+
+    public async Task Enter(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter")
+        {
+            await Send();
+        }
     }
 
     private async Task Send()

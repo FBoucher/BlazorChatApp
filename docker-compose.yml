@@ -35,6 +35,7 @@ services:
     pull_policy: always
     tty: true
     restart: always
+    entrypoint: "ollama run llama3.1"
 
   chatapp:
     build: ./

@@ -1,6 +1,7 @@
 ﻿@page "/counter"
 
 @using System.Diagnostics
+@using OpenTelemetry.Trace
 
 @rendermode InteractiveServer
 
@@ -37,6 +38,10 @@
         catch (Exception ex)
         {
             isError = true;
+            // throw and log the exception
+            activity?.SetStatus(Status.Error);
+            activity?.SetTag("error", ex.Message);
+            throw;
         }
     }
 }
