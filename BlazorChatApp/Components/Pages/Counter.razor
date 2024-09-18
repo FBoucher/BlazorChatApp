@@ -32,16 +32,16 @@
         {
             if (currentCount % 5 == 0)
             {
-                throw new Exception("Fake Exception");
+                throw new Exception($"Fake Exception Counter value {currentCount} is a multiple of 5");
             }
         }
         catch (Exception ex)
         {
             isError = true;
             // throw and log the exception
-            activity?.SetStatus(Status.Error);
-            activity?.SetTag("error", ex.Message);
-            throw;
+            activity?.SetStatus(ActivityStatusCode.Error, ex.Message);
+            //activity?.SetTag("error");
+            //throw;
         }
     }
 }

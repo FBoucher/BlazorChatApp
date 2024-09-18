@@ -45,7 +45,7 @@ else
         using var activity = Activity.Current.Source.StartActivity("fetch-weather-forecast");
         // Simulate asynchronous loading to demonstrate streaming rendering
         Random rand = new Random();
-        int fakeWait = rand.Next(200, 700);
+        int fakeWait = rand.Next(200, 5000);
         await Task.Delay(fakeWait);
 
         var startDate = DateOnly.FromDateTime(DateTime.Now);
