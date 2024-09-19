@@ -22,6 +22,7 @@ builder.Services.AddServerSideBlazor().AddCircuitOptions(option => { option.Deta
 
 // == Use this when Azure OpenAI ==================================
 // var aiConfig = builder.Configuration.GetSection("SmartComponents");
+
 //builder.Services.AddAzureOpenAIChatCompletion(
 //    deploymentName: aiConfig["DeploymentName"]!,
 //    endpoint: aiConfig["Endpoint"]!,
