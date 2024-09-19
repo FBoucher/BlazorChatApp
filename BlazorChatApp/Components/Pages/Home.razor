@@ -19,7 +19,7 @@
         <h5 class="card-title">Send Message</h5>
         <div class="form-group">
             <label for="message">Message:</label>
-            <textarea class="form-control" id="message" @bind="@message" @onkeydown="@Enter"></textarea>
+            <textarea class="form-control" id="message" @bind="@message" ></textarea>
         </div>
         <button id="btnSend" class="btn btn-primary mt-2" @onclick="Send">Send</button>
     </div>
@@ -36,19 +36,12 @@
 @code {
     private string message;
     private string response;
-    ChatHistory chat = new(@"You're a friendly and helpful chat assistant demonstrating the capabilities of Azure OpenAI in a Blazor app.");
+    ChatHistory chat = new(@"You're a friendly and helpful chat assistant demonstrating the capabilities of Azure OpenAI in a Blazor app.
+    When requested, you can change the theme colors of the app using CSS colors.");
 
     protected override async Task OnInitializedAsync()
     {
 
-    }
-
-    public async Task Enter(KeyboardEventArgs e)
-    {
-        if ((e.Code == "Enter") && !string.IsNullOrEmpty(message))
-        {
-            await Send();
-        }
     }
 
     private async Task Send()

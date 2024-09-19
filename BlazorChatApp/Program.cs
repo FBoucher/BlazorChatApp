@@ -1,7 +1,9 @@
+using System.ClientModel;
 using Azure.Identity;
 using BlazorChatApp;
 using BlazorChatApp.Components;
 using Microsoft.SemanticKernel;
+using OpenAI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,19 +20,31 @@ builder.Services.AddKernel();
 // Add DetailedErrors
 builder.Services.AddServerSideBlazor().AddCircuitOptions(option => { option.DetailedErrors = true; });
 
-// Use this when Azure OpenAI
-var aiConfig = builder.Configuration.GetSection("SmartComponents");
+// == Use this when Azure OpenAI ==================================
+// var aiConfig = builder.Configuration.GetSection("SmartComponents");
 //builder.Services.AddAzureOpenAIChatCompletion(
 //    deploymentName: aiConfig["DeploymentName"]!,
 //    endpoint: aiConfig["Endpoint"]!,
 //    new DefaultAzureCredential());
 
-builder.Services.AddAzureOpenAIChatCompletion( 
-    deploymentName: aiConfig["DeploymentName"]!,
-    endpoint: aiConfig["Endpoint"]!,
-    apiKey: aiConfig["ApiKey"]!);
+// builder.Services.AddAzureOpenAIChatCompletion( 
+//     deploymentName: aiConfig["DeploymentName"]!,
+//     endpoint: aiConfig["Endpoint"]!,
+//     apiKey: aiConfig["ApiKey"]!);
 
-// Use this when LLM is local
+
+// == Use this when GH Model ==================================
+var aiConfig = builder.Configuration.GetSection("GHComponents");
+var githubPAT = aiConfig["ApiKey"]!;
+
+var client = new OpenAIClient(
+			new ApiKeyCredential(githubPAT), 
+			new OpenAIClientOptions { Endpoint = new Uri("https://models.inference.ai.azure.com") });
+
+builder.Services.AddOpenAIChatCompletion(aiConfig["DeploymentName"]!, client);
+
+
+// == Use this when LLM is local ==================================
 //#pragma warning disable SKEXP0003, SKEXP0010, SKEXP0011, SKEXP0052
 
 //builder.Services.AddOpenAIChatCompletion(
@@ -38,8 +52,10 @@ builder.Services.AddAzureOpenAIChatCompletion(
 //    endpoint: new Uri(builder.Configuration["LOCAL_LLM"] ?? "http://localhost:11434/"),
 //    apiKey: "apikey");
 
-//builder.Services.AddScoped(sp => KernelPluginFactory.CreateFromType<ThemePlugin>(serviceProvider: sp));
 
+
+//Adding ThemePlugin (see file ThemePlugin.cs)
+builder.Services.AddScoped(sp => KernelPluginFactory.CreateFromType<ThemePlugin>(serviceProvider: sp));
 
 var app = builder.Build();
 

@@ -27,7 +27,7 @@ services:
      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
 
   ollama:
-    image: ollama/ollama:latest
+    image: ollama/ollama:0.3.11
     ports:
       - 11434:11434
     volumes:

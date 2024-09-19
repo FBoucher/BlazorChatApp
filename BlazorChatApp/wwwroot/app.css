@@ -1,3 +1,8 @@
+:root {
+    --color1: navy;
+    --color2: indigo;
+}
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
