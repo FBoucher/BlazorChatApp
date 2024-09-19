@@ -1,4 +1,4 @@
-version: "3.7"
+
 services:
   datadog:
     image: gcr.io/datadoghq/agent:latest
@@ -26,18 +26,18 @@ services:
      - /proc/:/host/proc/:ro
      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
 
-  ollama:
-    image: ollama/ollama:0.3.11
-    ports:
-      - 11434:11434
-    volumes:
-      - .:/code
-      -  /mnt/c/dev/ollama/ollama:/root/.ollama
-    container_name: ollama
-    pull_policy: always
-    tty: true
-    restart: always
-    entrypoint: "ollama run llama3.1"
+  # ollama:
+  #   image: ollama/ollama:0.3.11
+  #   ports:
+  #     - 11434:11434
+  #   volumes:
+  #     - .:/code
+  #     -  /mnt/c/dev/ollama/ollama:/root/.ollama
+  #   container_name: ollama
+  #   pull_policy: always
+  #   tty: true
+  #   restart: always
+  #   entrypoint: "ollama run llama3.1"
 
   chatapp:
     build: ./
